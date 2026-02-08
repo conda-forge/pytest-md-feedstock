@@ -1,0 +1,49 @@
+schema_version: 1
+
+context:
+  name: pytest-md
+  version: 0.2.0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/pytest-md-${{ version }}.tar.gz
+  sha256: 3b248d5b360ea5198e05b4f49c7442234812809a63137ec6cdd3643a40cf0112
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - setuptools
+  run:
+    - pytest >=4.2.1
+    - python >=${{ python_min }}
+
+tests:
+  - python:
+      imports:
+        - pytest_md
+      python_version: ${{ python_min }}.*
+  - requirements:
+      run:
+        - pip
+        - python ${{ python_min }}.*
+    script:
+      - pip check
+
+about:
+  summary: Plugin for generating Markdown reports for pytest results
+  license: MIT
+  license_file: LICENSE
+  homepage: https://github.com/hackebrot/pytest-md
+
+extra:
+  recipe-maintainers:
+    - pavelzw
